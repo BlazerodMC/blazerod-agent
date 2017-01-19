@@ -1,5 +1,9 @@
 # [Blazerod](https://blazerod.com) Agent
 
+[![Build Status](https://travis-ci.org/BlazerodMC/blazerod-agent.svg?branch=master)](https://travis-ci.org/BlazerodMC/blazerod-agent)
+[![GitHub release](https://img.shields.io/github/release/BlazerodMC/blazerod-agent.svg)]()
+[![Maintenance](https://img.shields.io/maintenance/yes/2017.svg)]()
+
 This is the OSS agent that reports events and statistics to the [Blazerod](https://blazerod.com) professional Minecraft platform.
 
 ## Requirements

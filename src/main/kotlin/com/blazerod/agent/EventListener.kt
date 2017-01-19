@@ -17,37 +17,37 @@ class EventListener(val plugin: Plugin) : Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onBlockBreak(event: BlockBreakEvent) {
-        plugin.dirtyChunks.add(event.block.chunk)
+        plugin.chunkHandler.markChunkDirty(event.block.chunk)
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onBlockBurn(event: BlockBurnEvent) {
-        plugin.dirtyChunks.add(event.block.chunk)
+        plugin.chunkHandler.markChunkDirty(event.block.chunk)
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onBlockExplode(event: BlockExplodeEvent) {
-        plugin.dirtyChunks.add(event.block.chunk)
+        plugin.chunkHandler.markChunkDirty(event.block.chunk)
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onBlockGrow(event: BlockGrowEvent) {
-        plugin.dirtyChunks.add(event.block.chunk)
+        plugin.chunkHandler.markChunkDirty(event.block.chunk)
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onBlockPlace(event: BlockPlaceEvent) {
-        plugin.dirtyChunks.add(event.block.chunk)
+        plugin.chunkHandler.markChunkDirty(event.block.chunk)
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onStructureGrow(event: StructureGrowEvent) {
-        plugin.dirtyChunks.add(event.location.chunk)
+        plugin.chunkHandler.markChunkDirty(event.location.chunk)
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onChunkPopulate(event: ChunkPopulateEvent) {
-        plugin.dirtyChunks.add(event.chunk)
+        plugin.chunkHandler.markChunkDirty(event.chunk)
     }
 
     // Player logged in, out, or was kicked or banned
@@ -57,7 +57,7 @@ class EventListener(val plugin: Plugin) : Listener {
         val data = Utils.buildEventJSON(event)
         data["joinMessage"] = event.joinMessage
         data["player"] = Utils.buildPlayerJSON(event.player)
-        plugin.sendEvent(data)
+        plugin.messages.sendEvent(data)
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -65,7 +65,7 @@ class EventListener(val plugin: Plugin) : Listener {
         val data = Utils.buildEventJSON(event)
         data["player"] = Utils.buildPlayerJSON(event.player)
         data["quitMessage"] = event.quitMessage
-        plugin.sendEvent(data)
+        plugin.messages.sendEvent(data)
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -74,7 +74,7 @@ class EventListener(val plugin: Plugin) : Listener {
         data["leaveMessage"] = event.leaveMessage
         data["player"] = Utils.buildPlayerJSON(event.player)
         data["reason"] = event.reason
-        plugin.sendEvent(data)
+        plugin.messages.sendEvent(data)
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -83,7 +83,7 @@ class EventListener(val plugin: Plugin) : Listener {
         data["kickMessage"] = event.kickMessage
         data["player"] = Utils.buildPlayerJSON(event.player, event.address.hostAddress)
         data["result"] = event.result.toString()
-        plugin.sendEvent(data)
+        plugin.messages.sendEvent(data)
     }
 
     // Player statistic changed
@@ -97,7 +97,7 @@ class EventListener(val plugin: Plugin) : Listener {
         data["player"] = Utils.buildPlayerJSON(event.player)
         data["previousValue"] = event.previousValue
         data["statistic"] = event.statistic.name
-        plugin.sendEvent(data)
+        plugin.messages.sendEvent(data)
     }*/
 
     // Player sent chat message
@@ -107,7 +107,7 @@ class EventListener(val plugin: Plugin) : Listener {
         val data = Utils.buildEventJSON(event)
         data["message"] = event.message
         data["player"] = Utils.buildPlayerJSON(event.player)
-        plugin.sendEvent(data)
+        plugin.messages.sendEvent(data)
     }
 
     // Player received achievement
@@ -117,7 +117,7 @@ class EventListener(val plugin: Plugin) : Listener {
         val data = Utils.buildEventJSON(event)
         data["achievement"] = event.achievement.name
         data["player"] = Utils.buildPlayerJSON(event.player)
-        plugin.sendEvent(data)
+        plugin.messages.sendEvent(data)
     }
 
     // Resource pack status changed
@@ -127,7 +127,7 @@ class EventListener(val plugin: Plugin) : Listener {
         val data = Utils.buildEventJSON(event)
         data["player"] = Utils.buildPlayerJSON(event.player)
         data["status"] = event.status.name
-        plugin.sendEvent(data)
+        plugin.messages.sendEvent(data)
     }
 
     // Player died
@@ -140,7 +140,7 @@ class EventListener(val plugin: Plugin) : Listener {
         if (event.entity.killer != null) {
             data["killer"] = Utils.buildPlayerJSON(event.entity.killer)
         }
-        plugin.sendEvent(data)
+        plugin.messages.sendEvent(data)
     }
 
     // Player teleported
@@ -152,7 +152,7 @@ class EventListener(val plugin: Plugin) : Listener {
         data["from"] = Utils.buildLocationJSON(event.from)
         data["player"] = Utils.buildPlayerJSON(event.player)
         data["to"] = Utils.buildLocationJSON(event.to)
-        plugin.sendEvent(data)
+        plugin.messages.sendEvent(data)
     }
 
     // Player respawned
@@ -163,7 +163,7 @@ class EventListener(val plugin: Plugin) : Listener {
         data["isBedSpawn"] = event.isBedSpawn
         data["player"] = Utils.buildPlayerJSON(event.player)
         data["respawnLocation"] = Utils.buildLocationJSON(event.respawnLocation)
-        plugin.sendEvent(data)
+        plugin.messages.sendEvent(data)
     }
 
     // Plugin enabled or disabled
@@ -171,13 +171,13 @@ class EventListener(val plugin: Plugin) : Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onPluginEnable(event: PluginEnableEvent) {
         val data = Utils.buildEventJSON(event)
-        plugin.sendEvent(data)
+        plugin.messages.sendEvent(data)
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onPluginDisable(event: PluginDisableEvent) {
         val data = Utils.buildEventJSON(event)
-        plugin.sendEvent(data)
+        plugin.messages.sendEvent(data)
     }
 
 }

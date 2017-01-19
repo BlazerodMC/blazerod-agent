@@ -19,7 +19,6 @@ object Utils {
     fun buildEventJSON(event: Event): JSONObject {
         val data = JSONObject()
         data["type"] = event.eventName
-        data["timestamp"] = Instant.now().epochSecond
         return data
     }
 
@@ -103,5 +102,9 @@ object Utils {
         data["totalmemory"] = runtime.totalMemory()
 
         return data
+    }
+
+    fun unixTimestamp(): Long {
+        return Instant.now().epochSecond
     }
 }

@@ -16,11 +16,23 @@ class Plugin : JavaPlugin() {
 
         server.pluginManager.registerEvents(EventListener(this), this)
 
-        FlushPendingMessagesTask(this).runTaskTimerAsynchronously(this, 1L, 100L)
-        PeriodicSystemStats(this).runTaskTimer(this, 1L, 20 * 5)
-        PeriodicTPSStatusTask(this).runTaskTimer(this, 1L, 20 * 5)
-        PeriodicUserStatusTask(this).runTaskTimer(this, 1L, 20 * 5)
-        DirtyChunksTask(this).runTaskTimer(this, 0L, 100L)
+        val fiveSeconds: Long = 20 * 5
+
+        // Message producers
+        DirtyChunksTask(this)
+                .runTaskTimer(this, 0L, fiveSeconds)
+        PeriodicSystemStatsTask(this)
+                .runTaskTimer(this, 1L, fiveSeconds)
+        PeriodicTPSStatusTask(this)
+                .runTaskTimer(this, 2L, fiveSeconds)
+        PeriodicUserStatusTask(this)
+                .runTaskTimer(this, 3L, fiveSeconds)
+        PeriodicWorldStatsTask(this)
+                .runTaskTimer(this, 4L, fiveSeconds)
+
+        // Message consumers
+        FlushPendingMessagesTask(this)
+                .runTaskTimerAsynchronously(this, 0L, fiveSeconds)
     }
 
     private fun loadConfiguration() {

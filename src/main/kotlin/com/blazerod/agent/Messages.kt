@@ -47,6 +47,19 @@ class Messages(val plugin: Plugin) {
         sendMessage("system", Utils.buildSystemStatsJSON())
     }
 
+    fun sendWorldStats() {
+        val worlds: List<JSONObject> = plugin.server.worlds.map {
+            val data = JSONObject()
+            data["name"] = it.name
+            data["loadedChunks"] = it.loadedChunks.size
+            data
+        }
+
+        val data = JSONArray()
+        data.addAll(worlds)
+        sendMessage("worlds", data)
+    }
+
     fun flushPendingMessages() {
         synchronized(pendingMessages) {
             if (pendingMessages.isEmpty()) return

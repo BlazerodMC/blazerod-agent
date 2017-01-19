@@ -8,6 +8,7 @@ import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.*
 import org.bukkit.event.server.PluginDisableEvent
 import org.bukkit.event.server.PluginEnableEvent
+import org.bukkit.event.world.ChunkPopulateEvent
 import org.bukkit.event.world.StructureGrowEvent
 
 class EventListener(val plugin: Plugin) : Listener {
@@ -42,6 +43,11 @@ class EventListener(val plugin: Plugin) : Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onStructureGrow(event: StructureGrowEvent) {
         plugin.dirtyChunks.add(event.location.chunk)
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    fun onChunkPopulate(event: ChunkPopulateEvent) {
+        plugin.dirtyChunks.add(event.chunk)
     }
 
     // Player logged in, out, or was kicked or banned

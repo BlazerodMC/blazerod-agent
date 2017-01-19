@@ -17,6 +17,8 @@
 -dontwarn com.google.common.**
 -dontwarn org.yaml.**
 -dontwarn org.bukkit.**
+-dontwarn okhttp3.**
+-dontwarn okio.**
 
 -keep class com.blazerod.agent.** { *; }
 

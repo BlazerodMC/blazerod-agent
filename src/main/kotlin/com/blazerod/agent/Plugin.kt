@@ -6,6 +6,7 @@ import java.io.File
 
 class Plugin : JavaPlugin() {
     var API_KEY = ""
+    var API_HOST = "http://localhost:3000"
 
     val chunkHandler = ChunkHandler(this)
     val messages = Messages(this)

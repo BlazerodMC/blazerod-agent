@@ -1,12 +1,22 @@
 package com.blazerod.agent
 
+import okhttp3.MediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody
 import org.bukkit.Chunk
+import org.json.simple.JSONArray
 import org.json.simple.JSONObject
+import java.net.ConnectException
+
+val JSON: MediaType = MediaType.parse("application/json; charset=utf-8")
 
 class Messages(val plugin: Plugin) {
     val pendingMessages = mutableListOf<JSONObject>()
     var sentMessageCount: Long = 0
+    var failedSends = 0
 
+    val http = OkHttpClient()
 
     fun sendEvent(data: JSONObject) {
         sendMessage("event", data)
@@ -41,13 +51,36 @@ class Messages(val plugin: Plugin) {
         synchronized(pendingMessages) {
             if (pendingMessages.isEmpty()) return
 
+            if (failedSends > 5) {
+                plugin.logger.warning("Failed to send events to Blazerod - pending events discarded")
+                pendingMessages.clear()
+                failedSends = 0
+                return
+            }
+
             val messages = pendingMessages.map { it.toJSONString() }.joinToString(separator = "\n")
             plugin.logger.info(messages)
 
-            sentMessageCount += pendingMessages.size
-            pendingMessages.clear()
+            val payload = JSONArray()
+            pendingMessages.forEach { payload.add(it) }
 
-            plugin.logger.info("Sent $sentMessageCount messages")
+            try {
+                val url = "${plugin.API_HOST}/events"
+                val body = RequestBody.create(JSON, payload.toJSONString())
+                val request = Request.Builder().url(url).post(body).build()
+                val response = http.newCall(request).execute()
+
+                plugin.logger.info("HTTP Code: ${response.code()}")
+
+                sentMessageCount += pendingMessages.size
+                failedSends = 0
+                pendingMessages.clear()
+
+                plugin.logger.info("Sent $sentMessageCount messages")
+            } catch (err: ConnectException) {
+                plugin.logger.warning("Unable to send events to Blazerod - retrying...")
+                failedSends += 1
+            }
         }
     }
 

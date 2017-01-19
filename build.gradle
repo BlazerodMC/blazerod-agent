@@ -45,15 +45,15 @@ repositories {
 }
 
 dependencies {
-    compile group: 'org.spigotmc', name: 'spigot-api', version:'1.8.8-R0.1-SNAPSHOT'
-    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version:"$kotlin_version"
+    compile group: 'org.spigotmc', name: 'spigot-api', version: '1.8.8-R0.1-SNAPSHOT'
+    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: "$kotlin_version"
 }
 
 processResources {
     filter ReplaceTokens, tokens: [
             'DESCRIPTION': project.property('description'),
-            'URL': project.property('url'),
-            'VERSION': project.property('version')
+            'URL'        : project.property('url'),
+            'VERSION'    : project.property('version')
     ]
 }
 

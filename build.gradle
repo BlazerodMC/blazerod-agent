@@ -24,7 +24,7 @@ plugins {
 apply plugin: 'kotlin'
 
 group = 'com.blazerod'
-version = '1.0.0'
+version = '0.0.1'
 description = """Analytics agent for blazerod.com"""
 ext.url = 'https://github.com/BlazerodMC/blazerod-agent'
 

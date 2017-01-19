@@ -86,7 +86,8 @@ object Utils {
 
             return ((recentTps as Field).get(minecraftServer) as DoubleArray).asList()
         } catch (ignored: IllegalAccessException) {
-        } catch (ignored: NoSuchFieldError) {}
+        } catch (ignored: NoSuchFieldError) {
+        }
 
         return doubleArrayOf(20.0, 20.0, 20.0).asList()
     }

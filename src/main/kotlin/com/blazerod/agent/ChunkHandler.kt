@@ -11,7 +11,7 @@ class ChunkHandler(val plugin: Plugin) {
 
     fun processDirtyChunks() {
         var chunk: Chunk
-        while(dirtyChunks.size > 0) {
+        while (dirtyChunks.size > 0) {
             chunk = dirtyChunks.first()
             dirtyChunks.remove(chunk)
             plugin.messages.sendChunkMap(chunk)

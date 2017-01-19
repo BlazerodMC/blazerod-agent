@@ -47,9 +47,14 @@ object Utils {
         return data
     }
 
-    fun buildChunkMapJSON(chunk: Chunk): JSONArray {
+    fun buildChunkMapJSON(chunk: Chunk): JSONObject {
+        val data = JSONObject()
+
+        data["x"] = chunk.x
+        data["z"] = chunk.z
+
         val world = chunk.world
-        val map = JSONArray()
+        val blocks = JSONArray()
 
         for (deltaX in 0..15) {
             val row = JSONArray()
@@ -60,15 +65,17 @@ object Utils {
                 val block = world.getBlockAt(topBlock.x, topBlock.y - 1, topBlock.z) ?: topBlock
                 val blockData = JSONObject()
                 blockData.put("type", block.type.toString())
-                blockData.put("x", block.x)
+                blockData.put("x", deltaX)
                 blockData.put("y", block.y)
-                blockData.put("z", block.z)
+                blockData.put("z", deltaZ)
                 row.add(blockData)
             }
-            map.add(row)
+            blocks.add(row)
         }
 
-        return map
+        data["blocks"] = blocks
+
+        return data
     }
 
     fun getTPS(): List<Double> {

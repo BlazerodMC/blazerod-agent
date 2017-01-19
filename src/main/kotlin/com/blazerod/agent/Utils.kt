@@ -7,6 +7,8 @@ import org.bukkit.entity.Player
 import org.bukkit.event.Event
 import org.json.simple.JSONArray
 import org.json.simple.JSONObject
+import java.lang.management.ManagementFactory
+import java.lang.management.OperatingSystemMXBean
 import java.lang.reflect.Field
 import java.time.Instant
 
@@ -88,5 +90,18 @@ object Utils {
         } catch (ignored: NoSuchFieldError) {}
 
         return doubleArrayOf(20.0, 20.0, 20.0).asList()
+    }
+
+    fun buildSystemStatsJSON(): JSONObject {
+        val data = JSONObject()
+        val runtime = Runtime.getRuntime()
+        val osBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean::class.java)
+
+        data["cpuLoad"] = osBean.systemLoadAverage
+        data["freeMemory"] = runtime.freeMemory()
+        data["maxMemory"] = runtime.maxMemory()
+        data["totalmemory"] = runtime.totalMemory()
+
+        return data
     }
 }

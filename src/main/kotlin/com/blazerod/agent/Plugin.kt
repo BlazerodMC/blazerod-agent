@@ -1,9 +1,6 @@
 package com.blazerod.agent
 
-import com.blazerod.agent.timers.FlushPendingMessages
-import com.blazerod.agent.timers.PeriodicTPSStatus
-import com.blazerod.agent.timers.PeriodicUserStatus
-import com.blazerod.agent.timers.SendMapData
+import com.blazerod.agent.tasks.*
 import org.bukkit.Chunk
 import org.bukkit.plugin.java.JavaPlugin
 import org.json.simple.JSONObject
@@ -18,6 +15,7 @@ class Plugin : JavaPlugin() {
         server.pluginManager.registerEvents(EventListener(this), this)
 
         FlushPendingMessages(this).runTaskTimerAsynchronously(this, 1L, 100L)
+        PeriodicSystemStats(this).runTaskTimer(this, 1L, 20 * 5)
         PeriodicTPSStatus(this).runTaskTimer(this, 1L, 20 * 5)
         PeriodicUserStatus(this).runTaskTimer(this, 1L, 20 * 5)
         SendMapData(this).runTaskTimer(this, 0L, 100L)
@@ -47,6 +45,10 @@ class Plugin : JavaPlugin() {
 
     fun sendTPSStatus() {
         sendMessage("tps", Utils.getTPS())
+    }
+
+    fun sendSystemStats() {
+        sendMessage("system", Utils.buildSystemStatsJSON())
     }
 
     fun flushPendingMessages() {

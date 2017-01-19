@@ -1,4 +1,4 @@
-package com.blazerod.agent.timers
+package com.blazerod.agent.tasks
 
 import com.blazerod.agent.Plugin
 import org.bukkit.Chunk
